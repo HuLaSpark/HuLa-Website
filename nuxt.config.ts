@@ -1,15 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/test-utils/module', '@nuxt/ui', '@nuxt/image', '@nuxtjs/color-mode'],
+  modules: ['@nuxt/test-utils/module', '@nuxt/ui', '@nuxt/image'],
+  css: ['~/styles/scss/variable.scss'],
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       script: [{ src: '/icon.js' }]
     }
-  },
-  colorMode: {
-    preference: 'dark' // default value of colorMode.preference
   },
   components: [
     {
@@ -21,8 +19,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          api: 'modern',
-          additionalData: '@use "~/styles/scss/variable.scss" as *;'
+          api: 'modern'
         }
       }
     },

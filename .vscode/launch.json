@@ -2,16 +2,23 @@
   "configurations": [
     {
       "type": "node-terminal",
-      "name": "运行脚本: dev",
+      "name": "pnpm dev",
       "request": "launch",
-      "command": "pnpm run dev",
+      "command": "pnpm dev",
       "cwd": "${workspaceFolder}"
     },
     {
       "type": "node-terminal",
-      "name": "运行脚本: build",
+      "name": "pnpm build",
       "request": "launch",
-      "command": "pnpm run build",
+      "command": "pnpm build",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "lint fix",
+      "request": "launch",
+      "command": "pnpm lint:fix",
       "cwd": "${workspaceFolder}"
     }
   ]

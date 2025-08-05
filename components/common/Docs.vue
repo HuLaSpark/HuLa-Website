@@ -1,5 +1,5 @@
 <template>
-  <PageBackground>
+  <div class="min-h-[calc(100vh-var(--header-height))] bg-[#f8fafc] dark:bg-[#111729] relative overflow-hidden">
     <div class="flex relative flex-col md:flex-row">
       <!-- Sidebar -->
       <aside
@@ -46,7 +46,7 @@
         </div>
       </main>
     </div>
-  </PageBackground>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, useTemplateRef } from 'vue'
-import { Renderer, Program, Mesh, Triangle, Color } from 'ogl'
 import type { OGLRenderingContext } from 'ogl'
+import { Color, Mesh, Program, Renderer, Triangle } from 'ogl'
+import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 
 interface DitherProps {
   waveSpeed?: number
@@ -312,12 +312,16 @@ const initializeScene = () => {
     fragment: fragmentShader,
     uniforms: {
       time: { value: 0 },
-      resolution: { value: new Float32Array([gl.canvas.width, gl.canvas.height]) },
+      resolution: {
+        value: new Float32Array([gl.canvas.width, gl.canvas.height])
+      },
       waveSpeed: { value: props.waveSpeed },
       waveFrequency: { value: props.waveFrequency },
       waveAmplitude: { value: props.waveAmplitude },
       waveColor: { value: new Color(...props.waveColor) },
-      mousePos: { value: new Float32Array([gl.canvas.width / 2, gl.canvas.height / 2]) },
+      mousePos: {
+        value: new Float32Array([gl.canvas.width / 2, gl.canvas.height / 2])
+      },
       enableMouseInteraction: { value: props.enableMouseInteraction ? 1 : 0 },
       mouseRadius: { value: props.mouseRadius },
       colorNum: { value: props.colorNum },
