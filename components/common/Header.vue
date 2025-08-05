@@ -63,9 +63,6 @@
       </ul>
 
       <div class="flex justify-end items-center lg:flex-1 gap-2.5">
-        <UTooltip text="搜索" :shortcuts="['⌘', 'O']" class="hidden md:block">
-          <UButton @click="isOpen = true" size="md" color="gray" variant="ghost" icon="solar:magnifer-linear" />
-        </UTooltip>
 
         <!-- 切换主题模式 -->
         <ColorMode />

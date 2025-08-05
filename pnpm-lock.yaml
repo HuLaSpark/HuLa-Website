@@ -14,9 +14,15 @@ importers:
       '@nuxt/ui':
         specifier: ^2.18.6
         version: 2.18.6(change-case@5.4.4)(magicast@0.3.5)(rollup@4.24.4)(vite@5.4.10(@types/node@22.9.0)(sass@1.82.0)(terser@5.36.0))(vue@3.5.12(typescript@5.7.2))(webpack-sources@3.2.3)
+      gsap:
+        specifier: ^3.13.0
+        version: 3.13.0
       nuxt:
         specifier: ^3.14.159
         version: 3.14.159(@parcel/watcher@2.5.0)(@types/node@22.9.0)(eslint@8.57.1)(ioredis@5.4.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.24.4)(sass@1.82.0)(terser@5.36.0)(typescript@5.7.2)(vite@5.4.10(@types/node@22.9.0)(sass@1.82.0)(terser@5.36.0))(vue-tsc@2.1.10(typescript@5.7.2))(webpack-sources@3.2.3)
+      ogl:
+        specifier: ^1.0.11
+        version: 1.0.11
       vue:
         specifier: ^3.5.12
         version: 3.5.12(typescript@5.7.2)
@@ -3429,6 +3435,9 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
+  gsap@3.13.0:
+    resolution: {integrity: sha512-QL7MJ2WMjm1PHWsoFrAQH/J8wUeqZvMtHO58qdekHpCfhvhSL4gSiz6vJf5EeMP0LOn3ZCprL2ki/gjED8ghVw==}
+
   gzip-size@7.0.0:
     resolution: {integrity: sha512-O1Ld7Dr+nqPnmGpdhzLmMTQ4vAsD+rHwMm1NLUmoUFFymBOMKxCCrtDxqdBRYXdeEPEi3SyoR4TizJLQrnKBNA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -4604,6 +4613,9 @@ packages:
 
   ofetch@1.4.1:
     resolution: {integrity: sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw==}
+
+  ogl@1.0.11:
+    resolution: {integrity: sha512-kUpC154AFfxi16pmZUK4jk3J+8zxwTWGPo03EoYA8QPbzikHoaC82n6pNTbd+oEaJonaE8aPWBlX7ad9zrqLsA==}
 
   ohash@1.1.4:
     resolution: {integrity: sha512-FlDryZAahJmEF3VR3w1KogSEdWX3WhA5GPakFx4J81kEAiHyLMpdLLElS8n8dfNadMgAne/MywcvmogzscVt4g==}
@@ -10484,6 +10496,8 @@ snapshots:
 
   graphemer@1.4.0: {}
 
+  gsap@3.13.0: {}
+
   gzip-size@7.0.0:
     dependencies:
       duplexer: 0.1.2
@@ -11804,6 +11818,8 @@ snapshots:
       destr: 2.0.3
       node-fetch-native: 1.6.4
       ufo: 1.5.4
+
+  ogl@1.0.11: {}
 
   ohash@1.1.4: {}
 
