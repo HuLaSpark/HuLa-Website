@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full h-screen overflow-hidden">
+  <div class="relative w-full h-screen">
     <!-- 背景 Dither 效果 -->
     <Dither
       :wave-speed="0.06"
