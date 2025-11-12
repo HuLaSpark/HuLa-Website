@@ -11,6 +11,8 @@ export const useUserSystem = () => {
         system.value = 'mac'
       } else if (/Win32|Win64|Windows|WinCE/.test(ua)) {
         system.value = 'windows'
+      } else if (/Linux|X11/.test(ua) && !/Android/.test(ua)) {
+        system.value = 'linux'
       } else if (/iPhone|iPad|iPod/.test(ua)) {
         system.value = 'ios'
       } else if (/Android/.test(ua)) {

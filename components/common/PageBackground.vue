@@ -33,23 +33,41 @@
   </div>
 </template>
 
-<script setup>
-const getParticleStyle = (index) => {
-  const delay = Math.random() * 5;
-  const duration = 3 + Math.random() * 4;
-  const size = 2 + Math.random() * 4;
-  const opacity = 0.1 + Math.random() * 0.3;
+<script setup lang="ts">
+// 使用确定性的伪随机数生成器，基于 index 生成种子
+// 这样可以确保服务器端和客户端生成相同的随机值，避免 hydration mismatch
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000
+  return x - Math.floor(x)
+}
+
+const getParticleStyle = (index: number) => {
+  // 使用 index 作为种子，确保每次生成的随机值都是确定的
+  const seed1 = index * 0.1
+  const seed2 = index * 0.2
+  const seed3 = index * 0.3
+  const seed4 = index * 0.4
+  const seed5 = index * 0.5
+  const seed6 = index * 0.6
+  
+  // 使用 Math.round 或 toFixed 来确保浮点数精度一致，避免 hydration mismatch
+  const delay = Math.round(seededRandom(seed1) * 5000) / 1000 // 保留3位小数
+  const duration = Math.round((3 + seededRandom(seed2) * 4) * 1000) / 1000 // 保留3位小数
+  const size = Math.round((2 + seededRandom(seed3) * 4) * 1000) / 1000 // 保留3位小数
+  const opacity = Math.round((0.1 + seededRandom(seed4) * 0.3) * 100000) / 100000 // 保留5位小数
+  const left = Math.round(seededRandom(seed5) * 10000) / 100 // 保留2位小数
+  const top = Math.round(seededRandom(seed6) * 10000) / 100 // 保留2位小数
   
   return {
-    left: Math.random() * 100 + '%',
-    top: Math.random() * 100 + '%',
+    left: left + '%',
+    top: top + '%',
     width: size + 'px',
     height: size + 'px',
     animationDelay: delay + 's',
     animationDuration: duration + 's',
     opacity: opacity,
-  };
-};
+  }
+}
 </script>
 
 <style scoped>

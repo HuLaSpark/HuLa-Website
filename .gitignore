@@ -20,3 +20,9 @@ logs
 coverage
 
 .claude/
+AGENTS.md
+
+# Environment variables
+.env
+.env.local
+.env.*.local

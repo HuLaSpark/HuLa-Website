@@ -1,6 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxt/test-utils/module', '@nuxt/ui', '@nuxt/image', '@nuxtjs/color-mode'],
+  icon: {
+    serverBundle: {
+      collections: ['solar']
+    },
+    fetchTimeout: 2000,
+    fallbackToApi: true // 允许回退到 CDN，但优先使用本地图标库
+  },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
@@ -35,5 +42,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   devServer: {
     port: 3000
+  },
+  runtimeConfig: {
+    // 服务器端私有变量（不会暴露给客户端）
+    githubToken: process.env.TOTAL_COUNT_TOKEN,
+    // 公共变量（会暴露给客户端，如果需要的话）
+    public: {
+      // 可以在这里添加需要在客户端使用的公共配置
+    }
   }
 })

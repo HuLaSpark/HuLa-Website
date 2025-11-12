@@ -35,6 +35,8 @@ jobs:
 
       # 添加打包步骤
       - name: Build
+        env:
+          TOTAL_COUNT_TOKEN: ${{ secrets.TOTAL_COUNT_TOKEN }}
         run: pnpm run build
 
       # 打包镜像推送到阿里云容器镜像服务
@@ -50,10 +52,11 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: cd /home/hula-im-server/hula-bak && sh hula-web-deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_PASSWORD }}
+          script: cd /home/hula-bak && sh hula-web-deploy.sh ${{ secrets.DOCKER_USERNAME }} ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOTAL_COUNT_TOKEN: ${{ secrets.TOTAL_COUNT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release

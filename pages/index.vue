@@ -141,6 +141,36 @@
                   </a>
                 </div>
               </template>
+
+              <!-- Linux下载按钮 -->
+              <UPopover v-if="system === 'linux'" v-model:open="linuxPanelVisible" mode="hover">
+                <div class="flex items-center gap-4">
+                  <div
+                    :class="{ 'text-teal-600': linuxPanelVisible }"
+                    class="group flex items-center gap-2 text-sm bg-[#fefefe] w-fit px-6 py-2 rounded-md dark:bg-gray-800">
+                    <UIcon name="solar:linux-bold" class="size-6 group-hover:text-teal-600" />
+                    <span class="group-hover:text-teal-600">Linux</span>
+                    <UIcon
+                      name="solar:alt-arrow-down-line-duotone"
+                      :class="{ 'rotate-180': linuxPanelVisible }"
+                      class="w-4 h-4 group-hover:text-teal-600 group-hover:rotate-180" />
+                  </div>
+                </div>
+
+                <template #panel>
+                  <div class="p-2 flex flex-col gap-2">
+                    <a
+                      v-for="(item, index) in linuxDownloads"
+                      :key="index"
+                      class="flex items-center gap-4 py-1 px-2 box-border rounded-md hover:bg-gray-100 hover:dark:bg-gray-800"
+                      rel="noopener noreferrer"
+                      :href="item.url">
+                      <svg class="size-4 flex-shrink-0"><use href="#to-bottom"></use></svg>
+                      <p class="text-end w-full">{{ item.label }}</p>
+                    </a>
+                  </div>
+                </template>
+              </UPopover>
             </div>
             <div v-else class="text-center py-4 text-gray-500">移动端版本敬请期待</div>
           </div>
@@ -165,7 +195,7 @@
                     class="w-12 h-12 bg-gradient-to-r from-teal-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                     <UIcon name="solar:star-bold" class="w-6 h-6 text-white" />
                   </div>
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" data-target="2300">0</div>
+                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" :data-target="githubStats.stars">0</div>
                   <div class="text-sm text-gray-600 dark:text-gray-400">GitHub Stars</div>
                 </div>
               </div>
@@ -181,7 +211,7 @@
                     class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                     <UIcon name="solar:code-2-bold" class="w-6 h-6 text-white" />
                   </div>
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" data-target="150">0</div>
+                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" :data-target="githubStats.commits">0</div>
                   <div class="text-sm text-gray-600 dark:text-gray-400">代码提交</div>
                 </div>
               </div>
@@ -197,7 +227,7 @@
                     class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                     <UIcon name="solar:users-group-rounded-bold" class="w-6 h-6 text-white" />
                   </div>
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" data-target="50">0</div>
+                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" :data-target="githubStats.contributors">0</div>
                   <div class="text-sm text-gray-600 dark:text-gray-400">贡献者</div>
                 </div>
               </div>
@@ -213,7 +243,7 @@
                     class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4">
                     <UIcon name="solar:download-bold" class="w-6 h-6 text-white" />
                   </div>
-                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" data-target="10000">0</div>
+                  <div class="text-2xl font-bold text-gray-900 dark:text-white mb-1 counter" :data-target="githubStats.downloads">0</div>
                   <div class="text-sm text-gray-600 dark:text-gray-400">下载量</div>
                 </div>
               </div>
@@ -345,8 +375,7 @@
 
           <div class="relative w-full flex items-center justify-center" @click="toggleImage">
             <div
-              class="relative rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.02] cursor-pointer">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent z-10"></div>
+              class="relative cursor-pointer">
               <Transition name="fade" mode="out-in">
                 <img
                   v-if="showFirstImage"
@@ -726,6 +755,7 @@
 </template>
 <script setup lang="ts">
 import { useUserSystem } from '~/hooks/useUserSystem'
+import { getCachedStats, isCacheExpired, saveCachedStats } from '~/utils/githubStatsCache'
 
 useSeoMeta({
   title: 'HuLa: 一款高度集成的即时通讯应用'
@@ -733,9 +763,18 @@ useSeoMeta({
 const hulaVersion = ref()
 const notVersion = ref()
 const panelVisible = ref(false)
+const linuxPanelVisible = ref(false)
 const showFirstImage = ref(true)
 const { system, isMobile } = useUserSystem()
 const currentImageIndex = ref(0)
+
+// GitHub 统计数据
+const githubStats = ref({
+  stars: 0,
+  commits: 0,
+  contributors: 0,
+  downloads: 0
+})
 const techImages = ref([
   {
     src: '/assets/home/vite.svg',
@@ -750,31 +789,44 @@ const techImages = ref([
 const macDownloads = computed(() => [
   {
     label: 'aarch64.app.tar.gz',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_aarch64.app.tar.gz`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_darwin_aarch64.app.tar.gz`,
     filename: 'aarch64.app.tar.gz'
   },
   {
     label: 'x64.app.tar.gz',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_x64.app.tar.gz`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_darwin_x64.app.tar.gz`,
     filename: 'x64.app.tar.gz'
   },
   {
     label: 'aarch64.dmg',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_aarch64.dmg`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_aarch64_darwin.dmg`,
     filename: `HuLa_${notVersion.value}_aarch64.dmg`
   },
   {
     label: 'x64.dmg',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_x64.dmg`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_x64_darwin.dmg`,
     filename: `HuLa_${notVersion.value}_x64.dmg`
   }
 ])
 
 const windowsDownload = computed(() => ({
-  label: 'x64-setup.exe',
-  url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_x64-setup.exe`,
-  filename: `HuLa_${notVersion.value}_x64-setup.exe`
+  label: 'x64_zh-CN_windows.msi',
+  url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${hulaVersion.value}_x64_zh-CN_windows.msi`,
+  filename: `HuLa_${hulaVersion.value}_x64_zh-CN_windows.msi`
 }))
+
+const linuxDownloads = computed(() => [
+  {
+    label: 'deb (Debian/Ubuntu)',
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_amd64_linux.deb`,
+    filename: `HuLa_${notVersion.value}_amd64.deb`
+  },
+  {
+    label: 'rpm (Fedora/RHEL)',
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa-${notVersion.value}-1.x86_64_linux.rpm`,
+    filename: `HuLa_${notVersion.value}_x86_64.rpm`
+  }
+])
 
 const toggleImage = () => {
   showFirstImage.value = !showFirstImage.value
@@ -811,7 +863,7 @@ const observeCounters = () => {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const target = parseInt(entry.target.getAttribute('data-target')!)
+          const target = parseInt(entry.target.getAttribute('data-target') || '0')
           animateCounter(entry.target, target)
           observer.unobserve(entry.target)
         }
@@ -821,6 +873,162 @@ const observeCounters = () => {
   )
 
   counters.forEach((counter) => observer.observe(counter))
+}
+
+
+// 获取 GitHub 仓库信息（Stars）
+const fetchGitHubRepoInfo = async (): Promise<number> => {
+  try {
+    const data = await $fetch<{ success: boolean; stars: number }>('/api/github/repo')
+    if (data.success) {
+      return data.stars || 0
+    }
+    return 0
+  } catch (error: any) {
+    console.error('获取 GitHub Stars 失败:', error.message || error)
+    return 0
+  }
+}
+
+// 获取贡献者数量
+const fetchContributors = async (): Promise<number> => {
+  try {
+    const data = await $fetch<{ success: boolean; count: number }>('/api/github/contributors')
+    if (data.success) {
+      return data.count || 0
+    }
+    return 0
+  } catch (error: any) {
+    console.error('获取贡献者数量失败:', error.message || error)
+    return 0
+  }
+}
+
+// 获取提交数量
+const fetchCommitsCount = async (): Promise<number> => {
+  try {
+    const data = await $fetch<{ success: boolean; count: number }>('/api/github/commits')
+    if (data.success) {
+      return data.count || 0
+    }
+    return 0
+  } catch (error: any) {
+    console.error('获取提交数量失败:', error.message || error)
+    return 0
+  }
+}
+
+// 获取 releases 下载量
+const fetchDownloadsCount = async (): Promise<number> => {
+  try {
+    const response = await $fetch<{ success: boolean; count: number; cached?: boolean }>(
+      '/api/github/clones'
+    )
+    
+    if (response.success) {
+      return response.count || 0
+    }
+    return 0
+  } catch (error: any) {
+    console.error('获取 releases 下载量失败:', error.message || error)
+    return 0
+  }
+}
+
+// 获取所有 GitHub 统计数据（带 localStorage 缓存）
+const fetchGitHubStats = async () => {
+  // 1. 先尝试从 localStorage 读取缓存
+  const cached = getCachedStats()
+  
+  if (cached && !isCacheExpired(cached)) {
+    // 缓存存在且未过期，使用缓存数据（立即显示，不等待网络请求）
+    githubStats.value = {
+      stars: cached.stars,
+      commits: cached.commits,
+      contributors: cached.contributors,
+      downloads: cached.downloads
+    }
+    
+    // 数据加载完成后，观察计数器
+    await nextTick()
+    observeCounters()
+    
+    // 2. 缓存未过期，不需要重新获取，直接返回
+    return
+  }
+  
+  // 3. 没有缓存或缓存已过期
+  if (cached && isCacheExpired(cached)) {
+    // 缓存已过期，先使用旧数据显示，然后异步获取新数据
+    githubStats.value = {
+      stars: cached.stars,
+      commits: cached.commits,
+      contributors: cached.contributors,
+      downloads: cached.downloads
+    }
+    
+    // 数据加载完成后，观察计数器
+    await nextTick()
+    observeCounters()
+    
+    // 异步获取新数据（不阻塞 UI）
+    Promise.all([
+      fetchGitHubRepoInfo(),
+      fetchContributors(),
+      fetchCommitsCount(),
+      fetchDownloadsCount()
+    ]).then(([stars, contributors, commits, downloads]) => {
+      // 只有成功获取到数据（值大于0）才更新
+      const newStats = {
+        stars: stars > 0 ? stars : cached.stars,
+        commits: commits > 0 ? commits : cached.commits,
+        contributors: contributors > 0 ? contributors : cached.contributors,
+        downloads: downloads > 0 ? downloads : cached.downloads
+      }
+      
+      // 更新显示
+      githubStats.value = newStats
+      
+      // 保存到缓存
+      saveCachedStats(newStats)
+      
+      // 重新观察计数器（如果数据有变化）
+      nextTick(() => {
+        observeCounters()
+      })
+    }).catch((error) => {
+      console.error('异步更新统计数据失败:', error)
+      // 失败时保持使用缓存数据
+    })
+  } else {
+    // 没有缓存或缓存已过期，同步获取数据
+    const [stars, contributors, commits, downloads] = await Promise.all([
+      fetchGitHubRepoInfo(),
+      fetchContributors(),
+      fetchCommitsCount(),
+      fetchDownloadsCount()
+    ])
+    
+    // 更新显示
+    githubStats.value = {
+      stars,
+      commits,
+      contributors,
+      downloads
+    }
+    
+    // 保存到缓存
+    saveCachedStats({
+      stars,
+      commits,
+      contributors,
+      downloads
+    })
+    
+    // 数据获取完成后，观察计数器
+    await nextTick()
+    observeCounters()
+  }
 }
 
 onMounted(() => {
@@ -838,10 +1046,8 @@ onMounted(() => {
     })
   startImageRotation()
 
-  // 启动计数器观察
-  nextTick(() => {
-    observeCounters()
-  })
+  // 获取 GitHub 统计数据
+  fetchGitHubStats()
 })
 
 onUnmounted(() => {
