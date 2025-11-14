@@ -789,41 +789,41 @@ const techImages = ref([
 const macDownloads = computed(() => [
   {
     label: 'aarch64.app.tar.gz',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_darwin_aarch64.app.tar.gz`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_aarch64.app.tar.gz`,
     filename: 'aarch64.app.tar.gz'
   },
   {
     label: 'x64.app.tar.gz',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_darwin_x64.app.tar.gz`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_x64.app.tar.gz`,
     filename: 'x64.app.tar.gz'
   },
   {
     label: 'aarch64.dmg',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_aarch64_darwin.dmg`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_aarch64.dmg`,
     filename: `HuLa_${notVersion.value}_aarch64.dmg`
   },
   {
     label: 'x64.dmg',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_x64_darwin.dmg`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_x64.dmg`,
     filename: `HuLa_${notVersion.value}_x64.dmg`
   }
 ])
 
 const windowsDownload = computed(() => ({
   label: 'x64_zh-CN_windows.msi',
-  url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${hulaVersion.value}_x64_zh-CN_windows.msi`,
+  url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${hulaVersion.value}_x64_zh-CN.msi`,
   filename: `HuLa_${hulaVersion.value}_x64_zh-CN_windows.msi`
 }))
 
 const linuxDownloads = computed(() => [
   {
     label: 'deb (Debian/Ubuntu)',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_amd64_linux.deb`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_amd64.deb`,
     filename: `HuLa_${notVersion.value}_amd64.deb`
   },
   {
     label: 'rpm (Fedora/RHEL)',
-    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa-${notVersion.value}-1.x86_64_linux.rpm`,
+    url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa-${notVersion.value}-1.x86_64.rpm`,
     filename: `HuLa_${notVersion.value}_x86_64.rpm`
   }
 ])
