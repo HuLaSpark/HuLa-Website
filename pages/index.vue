@@ -811,8 +811,8 @@ const macDownloads = computed(() => [
 
 const windowsDownload = computed(() => ({
   label: 'x64_zh-CN_windows.msi',
-  url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${hulaVersion.value}_x64_zh-CN.msi`,
-  filename: `HuLa_${hulaVersion.value}_x64_zh-CN_windows.msi`
+  url: `https://gitee.com/HuLaSpark/HuLa/releases/download/${hulaVersion.value}/HuLa_${notVersion.value}_x64_zh-CN.msi`,
+  filename: `HuLa_${notVersion.value}_x64_zh-CN.msi`
 }))
 
 const linuxDownloads = computed(() => [
