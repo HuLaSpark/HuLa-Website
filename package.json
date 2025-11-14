@@ -2,7 +2,7 @@
   "name": "hula-nuxt",
   "private": true,
   "type": "module",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "engines": {
     "node": ">=18.12.0",
     "pnpm": ">=8.10.0"

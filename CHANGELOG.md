@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/HuLaSpark/HuLa-Website/compare/v1.8.0...v1.8.1) (2025-11-14)
+
+
+### Bug Fixes
+
+* **common:** :bug: 修复首页的安装包路径问题 ([8f3c444](https://github.com/HuLaSpark/HuLa-Website/commit/8f3c444c83a8248ac0377f3ff9db89e9fd067d5c))
+* **hula version:** :bug: fix hula version path ([cba5137](https://github.com/HuLaSpark/HuLa-Website/commit/cba51378257a763b96d8651a71392aeef9d2eae3))
+
 # [1.8.0](https://github.com/HuLaSpark/HuLa-Nuxt/compare/v1.7.1...v1.8.0) (2025-07-16)
 
 
