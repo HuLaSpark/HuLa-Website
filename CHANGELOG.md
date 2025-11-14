@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/HuLaSpark/HuLa-Website/compare/v1.8.1...v1.8.2) (2025-11-14)
+
+
+### Bug Fixes
+
+* **windows:** :bug: fix windows download link splicing error ([b55fbff](https://github.com/HuLaSpark/HuLa-Website/commit/b55fbffe1a0970972320d8e15551e8caf77d131f))
+
 ## [1.8.1](https://github.com/HuLaSpark/HuLa-Website/compare/v1.8.0...v1.8.1) (2025-11-14)
 
 
